@@ -1,35 +1,23 @@
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    Fleder.destroy()
-    Fish.destroy(effects.spray, 100)
+    sprite.destroy()
+    otherSprite.destroy(effects.spray, 100)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    Fish = sprites.createProjectileFromSprite(img`
-. . . . . . . . . . . . . . c f f f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . c c d d b f . . . . . . . . . . . . . . 
-. . . . . . . . . . . c b d d b f f . . . . . . . . . c c c . . 
-. . . . . . . . . . f c c b b c f . . . . . . . . . c b b c . . 
-. . . f f f f f f f c c c c c c f f . . . . . . . c d b c . . . 
-. f f c b b b b b b b b b b b b b c f f f . . . . c d b f . . . 
-f c b b b b b b b b b c b b b b b b c c c f f . c d b f . . . . 
-f b c b b b b f f b b b c b c b b b c c c c c f f d c f . . . . 
-f b b 1 1 1 1 f f b b b c b c b b b c c c c c c b b c f . . . . 
-. f b 1 1 1 1 1 1 1 1 b b c b b b c c c c c c c c b b c f . . . 
-. . f c c c 3 3 c b 1 1 b b b b c c c c c c c f f f b b f . . . 
-. . . f c 1 3 1 c 1 1 1 b b b c c c c c b d b c . . f b b f . . 
-. . . . f 3 3 c 1 1 1 c b b c c d d d d d b c . . . . f f f . . 
-. . . . . f f 1 1 1 1 f d b b c c d d b c c . . . . . . . . . . 
-. . . . . . . c c c c c f d b b b f c c . . . . . . . . . . . . 
-. . . . . . . . . . . . . f f f f f . . . . . . . . . . . . . . 
-`, Ente, 100, 0)
-    Fish.setVelocity(50, 0)
+    Fish = sprites.createProjectileFromSprite(sprites.builtin.shark0, Ente, 100, 0)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    Ente.destroy()
+    otherSprite.destroy(effects.spray, 100)
     info.changeLifeBy(-1)
+    Ente.startEffect(effects.fire, 500)
+    Ente.setPosition(80, 60)
+    if (info.life() <= 0) {
+        game.over(false)
+    }
 })
-let Fish: Sprite = null
 let Fleder: Sprite = null
+let Fish: Sprite = null
 let Ente: Sprite = null
+sprites.builtin.shark0.flipX()
 Ente = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
